@@ -186,3 +186,36 @@ FROM MovieExec
 SELECT SUM(length)
 FROM Movies
 GROUP BY studioName
+
+#Example 25
+# list the total length of each producer's film
+SELECT SUM(length)
+FROM Movies, MovieExec
+WHERE producer# = cert#
+GROUP BY name
+
+#Example 26 -- HAVING clause
+#Computing the total length of film for early producer
+SELECT name, SUM(length)
+FROM Movies, MovieExec
+WHERE producer# = cert#
+GROUP BY name
+HAVING MIN(year)<1930
+
+-----------------------------------------------Database Modification---------------------------------------------------
+#Example 27 -- Insertion
+INSERT INTO StarsIn(movieTitle, movieYear, startName) -- relation information can be eliminated
+VALUES('The Maltese Falcon', 1942, 'Sydney Greenstreet');
+
+#Example 28 -- complex insertion
+INSERT INTO Studio(name)
+	SELECT DISTINCT studioName
+	FROM Movies
+	WHERE studioName NOT IN(
+			SELECT name
+			FROM Studio
+		)
+
+#Example 29 -- delete
+DELETE FROM StarsIn
+WHERE movieYear = 1942
